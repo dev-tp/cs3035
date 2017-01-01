@@ -6,20 +6,24 @@ checkIfCardIsInBetween = (hand) ->
 
   [hand[0], hand[1]] = [hand[1], hand[0]] if hand[0] % 13 > hand[1] % 13
 
-  if hand[0] % 13 <= lastCard and lastCard <= hand[1] % 13 then true else false
+  hand[0] % 13 <= lastCard and lastCard <= hand[1] % 13
 
 
 displayCard = (value) ->
   suit = Math.floor value / 13
   rank = value % 13
 
-  suit = if suit == 0 then 'Clubs' else if suit == 1 then 'Diamonds' else if suit == 2 then 'Hearts' else 'Spades'
-  rank = if rank == 0 then 'Ace' else if rank == 10 then 'Jack' else if rank == 11 then 'Queen' else if rank == 12 then 'King' else rank + 1
+  suit = ['Clubs', 'Diamonds', 'Hearts', 'Spades'][suit]
 
-  console.log "#{suit} of #{rank}"
+  ranks = ['Ace']
+  ranks.push i for i in [2..10]
+  ranks.push s for s in ['Jack', 'Queen', 'King']
+  rank = ranks[rank]
+
+  console.log "#{rank} of #{suit}"
 
 
-emptyDeck = (deck) -> if deck.length <= 1 then true else false
+emptyDeck = (deck) -> deck.length <= 1
 
 
 generateDealerHand = (deck) -> (deck.pop() for [1..3])
