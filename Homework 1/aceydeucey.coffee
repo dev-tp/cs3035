@@ -9,17 +9,9 @@ checkIfCardIsInBetween = (hand) ->
   hand[0] % 13 <= lastCard and lastCard <= hand[1] % 13
 
 
-displayCard = (value) ->
-  suit = Math.floor value / 13
-  rank = value % 13
-
-  suit = ['Clubs', 'Diamonds', 'Hearts', 'Spades'][suit]
-
-  ranks = ['Ace']
-  ranks.push i for i in [2..10]
-  ranks.push s for s in ['Jack', 'Queen', 'King']
-  rank = ranks[rank]
-
+displayCard = (suits, ranks, value) ->
+  suit = suits[Math.floor value / 13]
+  rank = ranks[value % 13]
   console.log "#{rank} of #{suit}"
 
 
@@ -30,8 +22,7 @@ generateDealerHand = (deck) -> (deck.pop() for [1..3])
 
 
 repopulate = (deck) ->
-  for i in [0..51]
-    deck.push i
+  deck.push i for i in [0..51]
   shuffle deck
 
 
@@ -46,6 +37,13 @@ deck = []
 houseMoney = 500
 userMoney = 200
 
+suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
+
+ranks = ['Ace']
+ranks.push i for i in [2..10]
+ranks.push s for s in ['Jack', 'Queen', 'King']
+rank = ranks[rank]
+
 repopulate deck
 
 stdin = readline.createInterface process.stdin, process.stdout
@@ -57,13 +55,13 @@ stdin.question 'Welcome! Enter 1 to play, 0 to quit: ', (line) ->
 
   dealerHand = generateDealerHand deck
   console.log "\nThe cards are:"
-  displayCard dealerHand[0]
-  displayCard dealerHand[1]
+  displayCard suits, ranks, dealerHand[0]
+  displayCard suits, ranks, dealerHand[1]
   process.stdout.write 'How much would you like to bet? $'
 
 stdin.on('line', (bet) ->
   console.log "\nThe card was:"
-  displayCard dealerHand[2]
+  displayCard suits, ranks, dealerHand[2]
 
   if checkIfCardIsInBetween dealerHand
     houseMoney -= parseInt bet
@@ -86,7 +84,7 @@ stdin.on('line', (bet) ->
 
   dealerHand = generateDealerHand deck
   console.log "\nThe cards are:"
-  displayCard dealerHand[0]
-  displayCard dealerHand[1]
+  displayCard suits, ranks, dealerHand[0]
+  displayCard suits, ranks, dealerHand[1]
   process.stdout.write 'How much would you like to bet? $'
 ).on('close', -> process.exit 0)
