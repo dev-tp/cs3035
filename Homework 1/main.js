@@ -1,41 +1,68 @@
 function battle(player, challenge) {
-  console.log('You encountered a %s!', challenge.name);
-  console.log('What do you want to do? [melee, defend, escape]');
-
-  var warning = 'You encountered a ' + challenge.name +
+  var message = 'You encountered a ' + challenge.name +
     '!\nWhat do you want do? [melee, defend, escape]';
 
   while (true) {
-    var response = prompt(warning);
+    var defenseMode = false;
+    var response = prompt(message);
 
-    if (response == 'melee') {
+    // TODO Add a chance of dealing critical damage for both player and foe
+    if (response == 'melee' || response == 'm') {
       challenge.hitPoints -= player.attackPoints;
 
-      console.log('You hit the %s!', challenge.name);
-      console.log('[%s\'s lifepoints]: %d', challenge.name, challenge.hitPoints);
+      if (challenge.hitPoints < 0)
+        challenge.hitPoints = 0;
+
+      message = 'You hit the ' + challenge.name +
+        '\n' + challenge.name + '\'s lifepoints: ' + challenge.hitPoints;
+
+      alert(message);
 
       if (challenge.hitPoints <= 0) {
-        console.log('You defeated the %s!', challenge.name);
-        console.log('You earned a %s!', challenge.prize.name);
+        message = 'You defeated the ' + challenge.name +
+          '!\nYou earned a ' + challenge.prize.name + '!';
+
+        alert(message);
 
         player.bag.push(challenge.prize);
 
-        return true;
+        return false;
       }
-
-    } else if (response == 'escape') {
+    } else if (response == 'defend' || response == 'd') {
+      defenseMode = true;
+    } else {
       break;
     }
 
-    console.log('The %s is about to attack!', challenge.name);
+    // 10% chance of opponent missing
+    if (Math.floor(Math.random() * 10) != 0 && !defenseMode) {
+      player.hitPoints -= challenge.attackPoints;
 
-    warning = 'The ' + challenge.name +
-      ' is about to attack!\nWhat do you want to do? [melee, defend, escape]';
+      if (player.hitPoints <= 0) {
+        alert('Game Over!');
 
-    // Implement what opponent does here
+        response = prompt('Do you want to play again? [yes/no]');
+
+        if (response == 'yes' || response == 'y')
+          window.onload();
+        else
+          return true;
+      }
+
+      alert('The ' + challenge.name + ' hit you!\n' + 'You have ' +
+        player.hitPoints + ' lifepoints');
+    } else if (defenseMode) {
+      alert('You shield against the ' + challenge.name + '\'s attack!');
+    } else {
+      alert('The ' + challenge.name + ' missed!');
+    }
+
+    message = challenge.name + '\'s lifepoints: ' + challenge.hitPoints +
+      '\nYour lifepoints: ' + player.hitPoints +
+        '\nWhat do you want to do? [melee, defend, escape]';
   }
 
-  return false;
+  return true;
 }
 
 function getChallengeAtPosition(challenges, position) {
@@ -88,10 +115,9 @@ function init(player, map, availablePositions, challenges) {
   player.startingPosition = availablePosition;
   player.position = availablePosition;
 
-  // TODO Add an array of attacks for each kind of enemy; add a chance of missing the attack as well.
-  challenges.push({ name: 'Badass Skag', hitPoints: 80, prize: null, location: null });
-  challenges.push({ name: 'Loot Midget', hitPoints: 100, prize: null, location: null });
-  challenges.push({ name: 'Slagged Thresher', hitPoints: 50, prize: null, location: null });
+  challenges.push({ name: 'Badass Skag', attackPoints: 15, hitPoints: 80, prize: null, location: null });
+  challenges.push({ name: 'Loot Midget', attackPoints: 15, hitPoints: 100, prize: null, location: null });
+  challenges.push({ name: 'Slagged Thresher', attackPoints: 10, hitPoints: 50, prize: null, location: null });
 
   var prizes = [];
 
@@ -141,18 +167,19 @@ function movePlayer(map, challenges, player, direction) {
       map[position[0]][position[1]] = player.name.charAt(0);
 
       printMap(map);
-      console.log('You made it! You reached the end of the level!');
+      alert('You made it! You reached the end of the level!');
+
+      var response = prompt('Do you want to play again? [yes/no]');
+
+      if (response == 'yes' || response == 'y')
+        window.onload();
+
+      // TODO Find a way to end the game
 
       return;
     } else if (map[position[0]][position[1]] == 'C') {
-      battle(player, getChallengeAtPosition(challenges, position));
-
-      // battle() will return a boolean value; if battle returns true,
-      // the challenge tile be left blank and the challenge's prize will
-      // be collected. Otherwise, it will the tile will be left alone,
-      // meaning the player decided to escape.
-
-      // return;
+      if (battle(player, getChallengeAtPosition(challenges, position)))
+        return;
     }
 
     player.previousPosition = player.position.slice();
