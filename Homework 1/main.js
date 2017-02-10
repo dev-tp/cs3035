@@ -1,3 +1,56 @@
+function battle(player, challenge) {
+  console.log('You encountered a %s!', challenge.name);
+  console.log('What do you want to do? [melee, defend, escape]');
+
+  var warning = 'You encountered a ' + challenge.name +
+    '!\nWhat do you want do? [melee, defend, escape]';
+
+  while (true) {
+    var response = prompt(warning);
+
+    if (response == 'melee') {
+      challenge.hitPoints -= player.attackPoints;
+
+      console.log('You hit the %s!', challenge.name);
+      console.log('[%s\'s lifepoints]: %d', challenge.name, challenge.hitPoints);
+
+      if (challenge.hitPoints <= 0) {
+        console.log('You defeated the %s!', challenge.name);
+        console.log('You earned a %s!', challenge.prize.name);
+
+        player.bag.push(challenge.prize);
+
+        return true;
+      }
+
+    } else if (response == 'escape') {
+      break;
+    }
+
+    console.log('The %s is about to attack!', challenge.name);
+
+    warning = 'The ' + challenge.name +
+      ' is about to attack!\nWhat do you want to do? [melee, defend, escape]';
+
+    // Implement what opponent does here
+  }
+
+  return false;
+}
+
+function getChallengeAtPosition(challenges, position) {
+  var x = position[0];
+  var y = position[1];
+
+  for (var i = 0; i < challenges.length; i++) {
+    var location = challenges[i].location;
+    if (location[0] == x && location[1] == y)
+      return challenges[i];
+  }
+
+  return null; // Programme should never reach this point
+}
+
 function init(player, map, availablePositions, challenges) {
   for (var i = 0; i < 8; i++) {
     var row = [];
@@ -35,6 +88,7 @@ function init(player, map, availablePositions, challenges) {
   player.startingPosition = availablePosition;
   player.position = availablePosition;
 
+  // TODO Add an array of attacks for each kind of enemy; add a chance of missing the attack as well.
   challenges.push({ name: 'Badass Skag', hitPoints: 80, prize: null, location: null });
   challenges.push({ name: 'Loot Midget', hitPoints: 100, prize: null, location: null });
   challenges.push({ name: 'Slagged Thresher', hitPoints: 50, prize: null, location: null });
@@ -69,7 +123,7 @@ function isValidMove(map, position) {
   return (-1 < x && x < 8) && (-1 < y && y < 8) && map[x][y] != 'W';
 }
 
-function movePlayer(map, player, direction) {
+function movePlayer(map, challenges, player, direction) {
   var position = player.position.slice();
 
   if (direction == 'up')
@@ -90,7 +144,16 @@ function movePlayer(map, player, direction) {
       console.log('You made it! You reached the end of the level!');
 
       return;
-    } // else if (map[position[0]][position[1]] == 'C') {}
+    } else if (map[position[0]][position[1]] == 'C') {
+      battle(player, getChallengeAtPosition(challenges, position));
+
+      // battle() will return a boolean value; if battle returns true,
+      // the challenge tile be left blank and the challenge's prize will
+      // be collected. Otherwise, it will the tile will be left alone,
+      // meaning the player decided to escape.
+
+      // return;
+    }
 
     player.previousPosition = player.position.slice();
     player.position = position.slice();
@@ -135,13 +198,13 @@ window.onload = function() {
 
   document.body.addEventListener('keyup', function(event) {
     if (event.key == 'w' || event.key == 'ArrowUp')
-      movePlayer(map, player, 'up');
+      movePlayer(map, challenges, player, 'up');
     else if (event.key == 's' || event.key == 'ArrowDown')
-      movePlayer(map, player, 'down');
+      movePlayer(map, challenges, player, 'down');
     else if (event.key == 'a' || event.key == 'ArrowLeft')
-      movePlayer(map, player, 'left');
+      movePlayer(map, challenges, player, 'left');
     else if (event.key == 'd' || event.key == 'ArrowRight')
-      movePlayer(map, player, 'right');
+      movePlayer(map, challenges, player, 'right');
   });
 
   init(player, map, availablePositions, challenges);
