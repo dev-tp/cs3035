@@ -4,11 +4,16 @@ function battle(player, challenge) {
 
   while (true) {
     var defenseMode = false;
+    var chance = Math.floor(Math.random() * 10);
     var response = prompt(message);
 
-    // TODO Add a chance of dealing critical damage for both player and foe
     if (response == 'melee' || response == 'm') {
-      challenge.hitPoints -= player.attackPoints;
+      if (chance == 0 || chance == 1) {
+        challenge.hitPoints -= player.attackPoints * 2;
+        alert('Critical!');
+      } else {
+        challenge.hitPoints -= player.attackPoints;
+      }
 
       if (challenge.hitPoints < 0)
         challenge.hitPoints = 0;
@@ -34,19 +39,19 @@ function battle(player, challenge) {
       break;
     }
 
-    // 10% chance of opponent missing
-    if (Math.floor(Math.random() * 10) != 0 && !defenseMode) {
-      player.hitPoints -= challenge.attackPoints;
+    if ((chance != 0 || chance != 1) && !defenseMode) {
+      chance = Math.floor(Math.random() * 10);
 
-      if (player.hitPoints <= 0) {
+      if (chance == 0 || chance == 1) {
+        player.hitPoints -= challenge.attackPoints * 2;
+        alert('Critical!');
+      } else {
+        player.hitPoints -= challenge.attackPoints;
+      }
+
+      if (player.hitPoints < 0) {
         alert('Game Over!');
-
-        response = prompt('Do you want to play again? [yes/no]');
-
-        if (response == 'yes' || response == 'y')
-          window.onload();
-        else
-          return true;
+        location.reload();
       }
 
       alert('The ' + challenge.name + ' hit you!\n' + 'You have ' +
@@ -111,7 +116,7 @@ function init(player, map, availablePositions, challenges) {
   // Add player to map
   var availablePosition = availablePositions.pop();
 
-  map[availablePosition[0]][availablePosition[1]] = player.name.charAt(0);
+  map[availablePosition[0]][availablePosition[1]] = 'P';
   player.startingPosition = availablePosition;
   player.position = availablePosition;
 
@@ -149,7 +154,7 @@ function isValidMove(map, position) {
   return (-1 < x && x < 8) && (-1 < y && y < 8) && map[x][y] != 'W';
 }
 
-function movePlayer(map, challenges, player, direction) {
+function movePlayer(map, tiles, challenges, player, direction) {
   var position = player.position.slice();
 
   if (direction == 'up')
@@ -164,19 +169,12 @@ function movePlayer(map, challenges, player, direction) {
   if (isValidMove(map, position)) {
     if (map[position[0]][position[1]] == 'G') {
       map[player.position[0]][player.position[1]] = ' ';
-      map[position[0]][position[1]] = player.name.charAt(0);
+      map[position[0]][position[1]] = 'P';
 
-      printMap(map);
+      printMap(map, tiles);
       alert('You made it! You reached the end of the level!');
+      location.reload();
 
-      var response = prompt('Do you want to play again? [yes/no]');
-
-      if (response == 'yes' || response == 'y')
-        window.onload();
-
-      // TODO Find a way to end the game
-
-      return;
     } else if (map[position[0]][position[1]] == 'C') {
       if (battle(player, getChallengeAtPosition(challenges, position)))
         return;
@@ -188,16 +186,32 @@ function movePlayer(map, challenges, player, direction) {
     map[player.previousPosition[0]][player.previousPosition[1]] = ' ';
     map[player.startingPosition[0]][player.startingPosition[1]] = 'S';
 
-    map[position[0]][position[1]] = player.name.charAt(0);
+    map[position[0]][position[1]] = 'P';
   }
 
-  printMap(map);
-  console.log();
+  printMap(map, tiles);
 }
 
-function printMap(map) {
-  for (var i = 0; i < 8; i++)
-    console.log(map[i].join(' '));
+function printMap(map, tiles) {
+  var count = 0;
+
+  for (var i = 0; i < 8; i++) {
+    for (var j = 0; j < 8; j++) {
+      if (map[i][j] == 'C')
+        tiles[count].style.background = '#f00';
+      else if (map[i][j] == 'G')
+        tiles[count].style.background = '#0ff';
+      else if (map[i][j] == 'P')
+        tiles[count].style.background = '#0f0';
+      else if (map[i][j] == 'S')
+        tiles[count].style.background = '#00f';
+      else if (map[i][j] == 'W')
+        tiles[count].style.background = '#000';
+      else if (map[i][j] == ' ')
+        tiles[count].style.background = '#fff';
+      count++;
+    }
+  }
 }
 
 function shuffle(list) {
@@ -217,23 +231,23 @@ window.onload = function() {
     bag: [],
     hitPoints: 100,
     movedPositions: [],
-    name: 'Player',
     position: null,
     previousPosition: null,
     startingPosition: null
   };
+  var tiles = document.getElementsByClassName('tile');
 
-  document.body.addEventListener('keyup', function(event) {
+  document.body.addEventListener('keydown', function(event) {
     if (event.key == 'w' || event.key == 'ArrowUp')
-      movePlayer(map, challenges, player, 'up');
+      movePlayer(map, tiles, challenges, player, 'up');
     else if (event.key == 's' || event.key == 'ArrowDown')
-      movePlayer(map, challenges, player, 'down');
+      movePlayer(map, tiles, challenges, player, 'down');
     else if (event.key == 'a' || event.key == 'ArrowLeft')
-      movePlayer(map, challenges, player, 'left');
+      movePlayer(map, tiles, challenges, player, 'left');
     else if (event.key == 'd' || event.key == 'ArrowRight')
-      movePlayer(map, challenges, player, 'right');
+      movePlayer(map, tiles, challenges, player, 'right');
   });
 
   init(player, map, availablePositions, challenges);
-  printMap(map);
+  printMap(map, tiles);
 };
