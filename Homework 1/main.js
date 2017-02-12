@@ -1,3 +1,11 @@
+function Challenge(name, attackPoints, hitPoints) {
+  this.attackPoints = attackPoints;
+  this.hitPoints = hitPoints;
+  this.location = null;
+  this.name = name;
+  this.prize = null;
+}
+
 function battle(player, challenge) {
   var message = 'You encountered a ' + challenge.name +
     '!\nWhat do you want do? [melee, defend, escape]';
@@ -113,16 +121,15 @@ function init(player, map, availablePositions, challenges) {
 
   shuffle(availablePositions);
 
-  // Add player to map
   var availablePosition = availablePositions.pop();
 
   map[availablePosition[0]][availablePosition[1]] = 'P';
   player.startingPosition = availablePosition;
   player.position = availablePosition;
 
-  challenges.push({ name: 'Badass Skag', attackPoints: 15, hitPoints: 80, prize: null, location: null });
-  challenges.push({ name: 'Loot Midget', attackPoints: 15, hitPoints: 100, prize: null, location: null });
-  challenges.push({ name: 'Slagged Thresher', attackPoints: 10, hitPoints: 50, prize: null, location: null });
+  challenges.push(new Challenge('Badass Skag', 15, 80));
+  challenges.push(new Challenge('Loot Midget', 15, 100));
+  challenges.push(new Challenge('Slagged Thresher', 10, 50));
 
   var prizes = [];
 
@@ -132,7 +139,6 @@ function init(player, map, availablePositions, challenges) {
 
   shuffle(prizes);
 
-  // Add at least three challenges to the map
   for (var i = 0; i < 3; i++) {
     availablePosition = availablePositions.pop();
 
@@ -142,7 +148,6 @@ function init(player, map, availablePositions, challenges) {
     challenges[i].prize = prizes[i];
   }
 
-  // Let's not forget to add a goal
   availablePosition = availablePositions.pop();
   map[availablePosition[0]][availablePosition[1]] = 'G';
 }
@@ -187,9 +192,9 @@ function movePlayer(map, tiles, challenges, player, direction) {
     map[player.startingPosition[0]][player.startingPosition[1]] = 'S';
 
     map[position[0]][position[1]] = 'P';
-  }
 
-  printMap(map, tiles);
+    printMap(map, tiles);
+  }
 }
 
 function printMap(map, tiles) {
@@ -198,17 +203,17 @@ function printMap(map, tiles) {
   for (var i = 0; i < 8; i++) {
     for (var j = 0; j < 8; j++) {
       if (map[i][j] == 'C')
-        tiles[count].style.background = '#f00';
+        tiles[count].style.background = '#ff7907';
       else if (map[i][j] == 'G')
         tiles[count].style.background = '#0ff';
       else if (map[i][j] == 'P')
-        tiles[count].style.background = '#0f0';
+        tiles[count].style.background = '#237bad';
       else if (map[i][j] == 'S')
         tiles[count].style.background = '#00f';
       else if (map[i][j] == 'W')
         tiles[count].style.background = '#000';
       else if (map[i][j] == ' ')
-        tiles[count].style.background = '#fff';
+        tiles[count].style.background = '#87cefa';
       count++;
     }
   }
