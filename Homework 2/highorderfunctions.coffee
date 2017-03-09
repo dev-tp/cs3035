@@ -42,7 +42,16 @@ class Person
   constructor: (@name, @sex, @born, @died, @father, @mother) ->
 
   toString: ->
-    "Name: #{@name}\nSex: #{@sex}\nBorn: #{@born}\nDied: #{@died}\nFather: #{@father}\nMother: #{@mother}"
+    result = []
+
+    result.push 'Name: ', @name
+    result.push "\nSex: ", @sex
+    result.push "\nBorn: ", @born
+    result.push "\nDied: ", @died
+    result.push "\nFather: ", @father
+    result.push "\nMother: ", @mother
+
+    result.join ''
 
 
 repeat = (symbol, n) -> (symbol for [0...n]).join ''
