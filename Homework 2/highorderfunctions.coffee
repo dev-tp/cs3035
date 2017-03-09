@@ -33,7 +33,7 @@ class BorderedCell extends TextCell
     result.push repeat('-', width + 2)
     for i in [0...height]
       line = @text[i] or ''
-      result.push(repeat('', width - line.length) + '|' + line + repeat(' ', width - line.length) + '|')
+      result.push('|' + line + repeat(' ', width - line.length) + '|')
     result.push repeat('-', width + 2)
     result
 
@@ -45,11 +45,7 @@ class Person
     "Name: #{@name}\nSex: #{@sex}\nBorn: #{@born}\nDied: #{@died}\nFather: #{@father}\nMother: #{@mother}"
 
 
-repeat = (symbol, numberOfTimes) ->
-  result = ''
-  for [0...numberOfTimes]
-    result += symbol
-  result
+repeat = (symbol, n) -> (symbol for [0...n]).join ''
 
 
 drawTable = (rows) ->
