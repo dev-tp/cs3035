@@ -227,7 +227,7 @@ function shuffle(list) {
   }
 }
 
-window.onload = function() {
+$(document).ready(function() {
   var availablePositions = [];
   var challenges = [];
   var map = [];
@@ -235,14 +235,11 @@ window.onload = function() {
     attackPoints: 20,
     bag: [],
     hitPoints: 100,
-    movedPositions: [],
-    position: null,
-    previousPosition: null,
-    startingPosition: null
+    movedPositions: []
   };
-  var tiles = document.getElementsByClassName('tile');
+  var tiles = $('.tile');
 
-  document.body.addEventListener('keydown', function(event) {
+  $(document).on('keydown', function(event) {
     if (event.key == 'w' || event.key == 'ArrowUp')
       movePlayer(map, tiles, challenges, player, 'up');
     else if (event.key == 's' || event.key == 'ArrowDown')
@@ -253,6 +250,22 @@ window.onload = function() {
       movePlayer(map, tiles, challenges, player, 'right');
   });
 
+  $('#up').click(function() {
+    movePlayer(map, tiles, challenges, player, 'up');
+  });
+
+  $('#down').click(function() {
+    movePlayer(map, tiles, challenges, player, 'down');
+  });
+
+  $('#left').click(function() {
+    movePlayer(map, tiles, challenges, player, 'left');
+  });
+
+  $('#right').click(function() {
+    movePlayer(map, tiles, challenges, player, 'right');
+  });
+
   init(player, map, availablePositions, challenges);
   printMap(map, tiles);
-};
+});
