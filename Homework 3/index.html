@@ -6,13 +6,13 @@
   <script src="main.js"></script>
   <style type="text/css">
     body { margin: 0; }
+    .button-container {
+      display: block;
+      margin-top: 20px;
+    }
     .container {
-      display: flex;
-      display: -ms-flexbox;
-      display: -webkit-box;
-      justify-content: center;
-      -ms-flex-pack: center;
-      -webkit-box-pack: center;
+      margin: 0 auto;
+      width: 500px;
     }
     .grid-container {
       display: inline-block;
@@ -31,6 +31,10 @@
       display: inline-block;
       height: 100%;
       width: 10.345%;
+    }
+    .wrapper {
+      width: 225px;
+      margin: 0 auto;
     }
   </style>
 </head>
@@ -116,6 +120,14 @@
         <div class="tile"></div>
         <div class="tile"></div>
         <div class="tile"></div>
+      </div>
+    </div>
+    <div class="button-container">
+      <div class="wrapper">
+        <button id="up">UP</button>
+        <button id="down">DOWN</button>
+        <button id="left">LEFT</button>
+        <button id="right">RIGHT</button>
       </div>
     </div>
   </div>
