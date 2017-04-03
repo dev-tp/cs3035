@@ -1,9 +1,7 @@
 function Challenge(name, attackPoints, hitPoints) {
   this.attackPoints = attackPoints;
   this.hitPoints = hitPoints;
-  this.location = null;
   this.name = name;
-  this.prize = null;
 }
 
 function battle(player, challenge) {
