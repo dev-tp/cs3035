@@ -180,7 +180,11 @@ function movePlayer(map, tiles, challenges, player, direction) {
       alert('You made it! You reached the end of the level!');
       location.reload();
 
-    } else if (map[position[0]][position[1]] == 'C') {
+    } else if (map[position[0]][position[1]] == 'B' || map[position[0]][position[1]] == 'C') {
+      map[position[0]][position[1]] = 'B';
+
+      printMap(map, tiles);
+
       if (battle(player, getChallengeAtPosition(challenges, position)))
         return;
     }
@@ -202,7 +206,7 @@ function printMap(map, tiles) {
 
   for (var i = 0; i < 8; i++) {
     for (var j = 0; j < 8; j++) {
-      if (map[i][j] == 'C')
+      if (map[i][j] == 'B')
         tiles[count].style.background = '#ff7907';
       else if (map[i][j] == 'G')
         tiles[count].style.background = '#0ff';
