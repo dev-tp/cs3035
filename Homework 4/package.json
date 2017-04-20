@@ -1,0 +1,27 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "CS3035 Homework",
+  "scripts": {
+    "start": "coffee server.coffee",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-tp/cs3035.git"
+  },
+  "keywords": [
+    "AngularJS",
+    "CoffeeScript",
+    "Express",
+    "Homework",
+    "MongoDB",
+    "TODO"
+  ],
+  "author": "Erik Sorto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dev-tp/cs3035/issues"
+  },
+  "homepage": "https://github.com/dev-tp/cs3035#readme"
+}
