@@ -3,8 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .container { width: 964px; }
+    .form-control { margin-right: 10px; }
+    .form-inline { margin-top: 40px; }
+    .jumbotron h3 { text-align: center; }
+    .reminders { margin-top: 20px; }
+  </style>
 </head>
 <body>
-  <h1>Hallo, Welt!</h1>
+  <div class="container">
+    <form class="form-inline">
+      <input type="text" class="form-control" ng-model="title" placeholder="Title">
+      <input type="text" class="form-control" ng-model="description" placeholder="Description">
+      <input type="date" class="form-control" ng-model="due" placeholder="Due"> <!-- Date format is yyyy-mm-dd -->
+      <button type="submit" class="btn btn-primary" ng-click="addReminder()">Add Reminder</button>
+    </form>
+    <div ng-if="todos.length == 0">
+      <div class="reminders">
+        <div class="jumbotron">
+          <h3>There are no reminders</h3>
+        </div>
+      </div>
+    </div>
+    <div ng-if="todos.length != 0">
+      <div class="reminders">
+        <div class="jumbotron">
+          <h3>You have {{todos.length}} reminder(s)</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -23,5 +23,10 @@
   "bugs": {
     "url": "https://github.com/dev-tp/cs3035/issues"
   },
-  "homepage": "https://github.com/dev-tp/cs3035#readme"
+  "homepage": "https://github.com/dev-tp/cs3035#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongojs": "^2.4.0"
+  }
 }
