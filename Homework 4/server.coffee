@@ -16,6 +16,12 @@ app.get '/todolist', (request, response) ->
     response.json [] if error
     response.json objects
 
+app.get '/todolist/remove/:id', (request, response) ->
+  id = request.params.id
+
+  database.todolist.remove { _id: mongojs.ObjectId id }, (error, objects) ->
+    response.redirect '/'
+
 app.post '/todolist', (request, response) ->
   database.todolist.save request.body, (error, objects) ->
     response.json [] if error
