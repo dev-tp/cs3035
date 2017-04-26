@@ -4,9 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TODO List</title>
+
+  <!-- AngularJS -->
+  <script src="scripts/angularjs/1.6.2/angular.js"></script>
+  <script src="scripts/angularjs/1.6.2/angular-route.js"></script>
+
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main-controller.js"></script>
+
+  <!-- Bootstrap 4 -->
+  <link rel="stylesheet" href="styles/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+
+  <script src="scripts/jquery/3.2.1/jquery.min.js"></script>
+  <script src="scripts/tether/1.4.0/tether.min.js"></script>
+  <script src="scripts/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 </head>
-<body>
-  <!--http://todomvc.com/examples/angularjs/#/-->
-  <h1>TODO List</h1>
+<body ng-app="app">
+  <div ng-view></div>
 </body>
 </html>
