@@ -38,13 +38,13 @@
             <div ng-if="todo.done">
               <h3 class="card-title done">{{todo.title}}</h3>
               <p class="card-text done">{{todo.description}}</p>
-              <a href="#" class="btn btn-outline-primary">Not done</a>
+              <a href="/todolist/done/{{todo._id}}/{{todo.done}}" class="btn btn-outline-primary">Not done</a>
               <a href="/todolist/remove/{{todo._id}}" class="btn btn-outline-danger">Remove</a>
             </div>
             <div ng-if="!todo.done">
               <h3 class="card-title">{{todo.title}}</h3>
               <p class="card-text">{{todo.description}}</p>
-              <a href="#" class="btn btn-primary">Done</a>
+              <a href="/todolist/done/{{todo._id}}/{{todo.done}}" class="btn btn-primary">Done</a>
               <button class="btn btn-info" data-toggle="modal" data-target="#edit">Edit</button>
               <a href="/todolist/remove/{{todo._id}}" class="btn btn-danger">Remove</a>
             </div>

@@ -16,10 +16,17 @@ app.get '/todolist', (request, response) ->
     response.json [] if error
     response.json objects
 
+app.get '/todolist/done/:id/:state', (request, response) ->
+  id = request.params.id
+  state = !(request.params.state == 'true')
+
+  database.todolist.update { _id: mongojs.ObjectId id }, {$set: { done: state }}, ->
+    response.redirect '/'
+
 app.get '/todolist/remove/:id', (request, response) ->
   id = request.params.id
 
-  database.todolist.remove { _id: mongojs.ObjectId id }, (error, objects) ->
+  database.todolist.remove { _id: mongojs.ObjectId id }, ->
     response.redirect '/'
 
 app.post '/todolist', (request, response) ->
