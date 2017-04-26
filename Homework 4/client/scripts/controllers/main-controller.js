@@ -23,6 +23,16 @@ angular
       }
     };
 
+    $scope.getTodo = function(todo) {
+      $scope.todo = {
+        _id: todo._id,
+        title: todo.title,
+        description: todo.description,
+        due: todo.due,
+        done: false
+      };
+    };
+
     function refresh() {
       $http.get('/todolist').then(function(response) {
         $scope.todos = response.data;

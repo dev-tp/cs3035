@@ -13,6 +13,7 @@
     .form-control { margin-right: 10px; }
     .form-inline { margin-top: 40px; }
     .jumbotron h3 { text-align: center; }
+    .modal-body input { margin-bottom: 10px; }
     .reminders { margin-top: 20px; }
   </style>
 </head>
@@ -21,7 +22,7 @@
     <form class="form-inline">
       <input type="text" class="form-control" ng-model="title" placeholder="Title">
       <input type="text" class="form-control" ng-model="description" placeholder="Description">
-      <input type="date" class="form-control" ng-model="due" placeholder="Due"> <!-- Date format is yyyy-mm-dd -->
+      <input type="text" class="form-control" ng-model="due" placeholder="Due">
       <button type="submit" class="btn btn-primary" ng-click="addReminder()">Add Reminder</button>
     </form>
     <div ng-if="todos.length == 0">
@@ -44,9 +45,30 @@
             <div ng-if="!todo.done">
               <h3 class="card-title">{{todo.title}}</h3>
               <p class="card-text">{{todo.description}}</p>
+              <p class="card-text">Due: {{todo.due}}</p>
               <a href="/todolist/done/{{todo._id}}/{{todo.done}}" class="btn btn-primary">Done</a>
-              <button class="btn btn-info" data-toggle="modal" data-target="#edit">Edit</button>
+              <button class="btn btn-info" data-toggle="modal" data-target="#edit" ng-click="getTodo(todo)">
+                Edit
+              </button>
               <a href="/todolist/remove/{{todo._id}}" class="btn btn-danger">Remove</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update</h5>
+            </div>
+            <div class="modal-body">
+              <input type="text" class="form-control" placeholder="Title" value="{{todo.title}}" ng-model="todo.title">
+              <input type="text" class="form-control" placeholder="Description" value="{{todo.description}}" ng-model="todo.description">
+              <input type="text" class="form-control" placeholder="Due" value="{{todo.due}}" ng-model="todo.due">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <a href="/todolist/update/{{todo}}" class="btn btn-primary">Save Changes</a>
             </div>
           </div>
         </div>
