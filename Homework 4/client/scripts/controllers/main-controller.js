@@ -23,6 +23,15 @@ angular
       }
     };
 
+    $scope.changeState = function(id, state) {
+      $http.get('/todolist/done/' + id + '/' + state).then(function(response) {
+        refresh();
+      }, function(error) {
+        console.log('There was an error updating: ' + id);
+        console.log(error);
+      });
+    };
+
     $scope.getTodo = function(todo) {
       $scope.todo = {
         _id: todo._id,
@@ -31,6 +40,15 @@ angular
         due: todo.due,
         done: false
       };
+    };
+
+    $scope.remove = function(id) {
+      $http.get('/todolist/remove/' + id).then(function(response) {
+        refresh();
+      }, function(error) {
+        console.log('There was an error removing: ' + id);
+        console.log(error);
+      });
     };
 
     function refresh() {

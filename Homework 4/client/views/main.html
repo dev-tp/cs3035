@@ -39,18 +39,18 @@
             <div ng-if="todo.done">
               <h3 class="card-title done">{{todo.title}}</h3>
               <p class="card-text done">{{todo.description}}</p>
-              <a href="/todolist/done/{{todo._id}}/{{todo.done}}" class="btn btn-outline-primary">Not done</a>
-              <a href="/todolist/remove/{{todo._id}}" class="btn btn-outline-danger">Remove</a>
+              <button class="btn btn-outline-primary" ng-click="changeState(todo._id, todo.done)">Not done</button>
+              <button class="btn btn-outline-danger" ng-click="remove(todo._id)">Remove</button>
             </div>
             <div ng-if="!todo.done">
               <h3 class="card-title">{{todo.title}}</h3>
               <p class="card-text">{{todo.description}}</p>
               <p class="card-text">Due: {{todo.due}}</p>
-              <a href="/todolist/done/{{todo._id}}/{{todo.done}}" class="btn btn-primary">Done</a>
+              <button class="btn btn-primary" ng-click="changeState(todo._id, todo.done)">Done</button>
               <button class="btn btn-info" data-toggle="modal" data-target="#edit" ng-click="getTodo(todo)">
                 Edit
               </button>
-              <a href="/todolist/remove/{{todo._id}}" class="btn btn-danger">Remove</a>
+              <button class="btn btn-danger" ng-click="remove(todo._id)">Remove</button>
             </div>
           </div>
         </div>
