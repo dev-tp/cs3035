@@ -18,7 +18,6 @@ angular
           refresh();
         }, function(error) {
           console.log('[ ERROR ]' + JSON.stringify(error));
-          refresh();
         });
       }
     };
