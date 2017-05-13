@@ -41,4 +41,7 @@ problem(1, [[ 1,  _,  _,  2,   3,  4,  _,  _,  12,  _,  6,  _,   _,  _,  7,  _],
             [11,  1, 15,  9,   _,  _, 13,  _,   _,  2,  _,  _,   _, 14,  _,  _],
             [ _, 14,  _,  _,   _, 11,  _,  2,   _,  _, 13,  3,   5,  _,  _, 12]]).
 
-% problem(1, Rows), sudoku(Rows).
+main :-
+  problem(1, Rows),
+  sudoku(Rows),
+  maplist(portray_clause, Rows).
