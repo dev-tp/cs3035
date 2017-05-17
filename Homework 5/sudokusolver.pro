@@ -1,6 +1,3 @@
-% Render solutions nicely.
-% :- use_rendering(sudoku).
-
 % Required module to make ins work
 :- use_module(library(clpfd)).
 
